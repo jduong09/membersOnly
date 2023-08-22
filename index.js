@@ -21,6 +21,7 @@ db.on('error', console.error.bind(console, 'mongo connection error'));
 
 const app = express();
 app.set("views", path.join(__dirname, '/views'));
+app.use(express.static(__dirname));
 app.set("view engine", "ejs");
 
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
@@ -58,6 +59,12 @@ passport.deserializeUser(async (id, done) => {
   } catch(err) {
     done(err);
   }
+});
+
+// Middleware function to set local currentUser in express.
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
 })
 
 // POST Sign Up
@@ -89,13 +96,25 @@ app.post('/users/login', passport.authenticate('local', {
   failureRedirect: '/'
 }));
 
-// GET Index
-app.get('/', (req, res) => res.render("index"));
+app.post('/users/logout', (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    console.log(res.locals.currentUser);
+    res.redirect('/');
+  });
+});
 
-// GET Sign Up
-app.get('/users/new', (req, res) => res.redirect('/users/signup'));
+// GET Index
+app.get('/', (req, res) => {
+  console.log(res.locals.currentUser);
+  res.render("index", { user: res.locals.currentUser})
+});
+
+// GET Log In Page
+app.get('/users/login', (req, res) => res.render("form", { formType: "Log In" }));
 
 // GET Sign Up Page
-app.get('/users/signup', (req, res) => res.render("form"));
-
+app.get('/users/signup', (req, res) => res.render("form", { formType: "Sign Up" }));
 app.listen(3000, () => console.log("App listening on Port 3000"));

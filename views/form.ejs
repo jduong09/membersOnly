@@ -4,16 +4,28 @@
   <title>Chatting App</title>
 </head>
 <body>
-  <h1>Sign Up</h1>
-  <form action="/users/new" method="POST">
-    <label for="username">Username</label>
-    <input id="username" name="username" placeholder="jduong" />
-    <label for="password">Password</label>
-    <input id="password" name="password" type="password" />
-    <label for="first_name">First Name</label>
-    <input id="first_name" name="first_name" placeholder="Justin" />
-    <label for="family_name">Last Name</label>
-    <input id="family_name" name="family_name" placeholder="Duong" />
-    <button type="submit" id="btn-submit">Sign Up</button>
-  </form>
+  <% if (formType === "Sign Up") { %>
+    <h1>Sign Up</h1>
+    <form action="/users/new" method="POST">
+      <label for="username">Username</label>
+      <input id="username" name="username" placeholder="jduong" />
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" />
+      <label for="first_name">First Name</label>
+      <input id="first_name" name="first_name" placeholder="Justin" />
+      <label for="family_name">Last Name</label>
+      <input id="family_name" name="family_name" placeholder="Duong" />
+      <button type="submit" id="btn-submit">Sign Up</button>
+    </form>
+  <% } else { %>
+    <h1>Log In</h1>
+    <form action="/users/login" method="POST">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="jduong" />
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" />
+      <button type="submit">Log In</button>
+    </form>
+  <% } %>
 </body>
+</html>

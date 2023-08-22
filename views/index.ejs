@@ -2,15 +2,37 @@
 <head>
   <meta charset="UTF-8" />
   <title>Chatting App</title>
+  <link rel="stylesheet" type="text/css" href="../css/meyers_reset.css" />
+  <link rel="stylesheet" type="text/css" href="../css/index.css" />
+  <script type="text/javascript" src="../js/index.js"></script>
 </head>
 <body>
-  <h1>Members Only</h1>
-  <form action="/users/login" method="POST">
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username" placeholder="jduong" />
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" />
-    <button type="submit">Log In</button>
-  </form>
-  <a href="/users/new">Sign Up</a>
+  <header>
+    <h1>Members Only</h1>
+    <nav>
+      <% if (user) { %>
+        <ul id="list-nav">
+          <li><a href="/users/login">Sign In</a></li>
+          <li><a href="/users/signup">Sign Up</a></li>
+        </ul>
+      <% } else { %>
+        <ul id="list-nav">
+          <li><% user %></li>
+          <li><button type="button" id="btn-sign-out">Sign Out</button></li>
+        </ul>
+      <% } %>
+    </nav>
+  </header>
+  <main>
+    <% if (user) { %>
+      <h2>Feed</h2>
+      <ul id="list-feed">
+        <li>Message 1</li>
+        <li>Message 2</li>
+      </ul>
+    <% } else { %>
+      <h2>HeHe Hidden Feed</h2>
+      <img id="img-sneaky" src="../images/lucky_star_sneak.jpeg" alt="Image of Konata Izumi from Lucky Star depicting a sneaky-like attitude" />
+    <% } %>
+  </main>
 </body>
