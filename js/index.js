@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnSignOut.addEventListener('click', (e) => {
     e.preventDefault();
-    console.log('clicked');
-    fetch('/users/logout', { method: 'POST' });
+    fetch('/users/logout', { method: 'POST' }).then(() => {
+      window.location = '/';
+    });
   });
 })

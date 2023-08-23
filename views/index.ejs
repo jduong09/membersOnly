@@ -4,7 +4,9 @@
   <title>Chatting App</title>
   <link rel="stylesheet" type="text/css" href="../css/meyers_reset.css" />
   <link rel="stylesheet" type="text/css" href="../css/index.css" />
-  <script type="text/javascript" src="../js/index.js"></script>
+  <% if (user) { %>
+    <script type="text/javascript" src="../js/index.js"></script>
+  <% } %>
 </head>
 <body>
   <header>
@@ -12,13 +14,13 @@
     <nav>
       <% if (user) { %>
         <ul id="list-nav">
-          <li><a href="/users/login">Sign In</a></li>
-          <li><a href="/users/signup">Sign Up</a></li>
+          <li><%= user.first_name %></li>
+          <li><button type="button" id="btn-sign-out">Sign Out</button></li>
         </ul>
       <% } else { %>
         <ul id="list-nav">
-          <li><% user %></li>
-          <li><button type="button" id="btn-sign-out">Sign Out</button></li>
+          <li><a href="/users/login">Sign In</a></li>
+          <li><a href="/users/signup">Sign Up</a></li>
         </ul>
       <% } %>
     </nav>
@@ -27,9 +29,24 @@
     <% if (user) { %>
       <h2>Feed</h2>
       <ul id="list-feed">
-        <li>Message 1</li>
-        <li>Message 2</li>
+        <% messages.forEach(function(message){ %>
+          <li>
+            <h3><%= message.title %></h3>
+            <span><%= message.author %></span>
+            <div><%= message.content %></div>
+          </li>
+        <% }); %>
       </ul>
+      <div>
+        <h2>New Message</h2>
+        <form id="form-message-new" action="/messages" method="POST">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" placeholder="Super Secret Message" />
+          <label for="content">Content</label>
+          <textarea id="content" name="content" rows="15" cols="6">Insert content here...</textarea>
+          <button id="btn-submit-message" type="submit">Send Message</button>
+        </form>
+      </div>
     <% } else { %>
       <h2>HeHe Hidden Feed</h2>
       <img id="img-sneaky" src="../images/lucky_star_sneak.jpeg" alt="Image of Konata Izumi from Lucky Star depicting a sneaky-like attitude" />

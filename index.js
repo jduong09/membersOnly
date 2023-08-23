@@ -81,7 +81,6 @@ app.post('/users/new', (req, res, next) => {
           family_name: req.body.family_name,
           member: true
         });
-
         await user.save();
         res.redirect('/');
       }
@@ -101,15 +100,38 @@ app.post('/users/logout', (req, res, next) => {
     if (err) {
       return next(err);
     }
-    console.log(res.locals.currentUser);
     res.redirect('/');
   });
 });
 
+app.post('/messages', async (req, res, next) => {
+  try {
+    const message = new Message({
+      title: req.body.title,
+      content: req.body.content,
+      author: res.locals.currentUser._id
+    });
+    await message.save();
+    res.redirect('/');
+  } catch(err) {
+    return next(err)
+  }
+});
+
 // GET Index
-app.get('/', (req, res) => {
-  console.log(res.locals.currentUser);
-  res.render("index", { user: res.locals.currentUser})
+app.get('/', async (req, res) => {
+  const messages = await Message.find({}).then(async (data) => {
+    return await Promise.all(data.map(async (message) => {
+      const authorName = await message.getAuthor();
+      return {
+        id: message._id.toString(),
+        title: message.title,
+        content: message.content,
+        author: authorName
+      }
+    }))
+  });
+  res.render("index", { user: res.locals.currentUser, messages });
 });
 
 // GET Log In Page
