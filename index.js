@@ -118,6 +118,20 @@ app.post('/messages', async (req, res, next) => {
   }
 });
 
+app.post('/messages/:messageId', async (req, res, next) => {
+  const updatedData = {
+    title: req.body.title,
+    content: req.body.content
+  }
+
+  try {
+    await Message.findOneAndUpdate({ _id: req.params.messageId }, updatedData);
+    res.redirect('/');
+  } catch(err) {
+    return next(err);
+  }
+})
+
 // GET Index
 app.get('/', async (req, res) => {
   const messages = await Message.find({}).then(async (data) => {
@@ -134,9 +148,31 @@ app.get('/', async (req, res) => {
   res.render("index", { user: res.locals.currentUser, messages });
 });
 
+app.get('/messages/:messageId/edit', async (req, res) => {
+  const messageData = await Message.findById(req.params.messageId)
+    .then(data => {
+      return {
+        id: req.params.messageId,
+        title: data.title,
+        content: data.content
+      }
+    });
+  res.render("update", { message: messageData });
+});
+
 // GET Log In Page
 app.get('/users/login', (req, res) => res.render("form", { formType: "Log In" }));
 
 // GET Sign Up Page
 app.get('/users/signup', (req, res) => res.render("form", { formType: "Sign Up" }));
 app.listen(3000, () => console.log("App listening on Port 3000"));
+
+// DELETE One Message
+app.delete('/messages/:messageId', async (req, res, next) => {
+  try {
+    await Message.findOneAndDelete({ _id: req.params.messageId });
+    res.send({ message: 'success' });
+  } catch(err) {
+    next(err);
+  }
+});

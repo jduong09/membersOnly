@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Chatting App</title>
+  <link rel="stylesheet" type="text/css" href="../../css/meyers_reset.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/index.css" />
+</head>
+<body>
+  <h1>Edit Message</h1>
+  <form action="/messages/<%= message.id %>" method="POST">
+    <label for="title">Title</label>
+    <input id="title" name="title" type="text" value="<%= message.title %>" />
+    <label for="content">Content</label>
+    <input id="content" name="content" type="text" value="<%= message.content %>" />
+    <button type="submit" id="btn-submit">Confirm Changes</button>
+  </form>
+</body>
+</html>

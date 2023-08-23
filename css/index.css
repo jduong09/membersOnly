@@ -48,13 +48,31 @@ main {
 }
 
 #list-feed > li > h3, #list-feed > li > span {
-  margin-bottom: .25rem;
+  margin-bottom: 1rem;
   font-weight: 600;
   font-size: 1.15rem;
 }
 
 #list-feed > li > div {
   flex: 1 100%;
+}
+
+#list-feed > li > div:first-of-type {
+  margin-bottom: 1rem;
+}
+
+#list-feed > li > .message-footer {
+  display: inline-flex;
+  justify-content: flex-end;
+}
+
+.message-footer > ul {
+  display: flex;
+  align-items: center;
+}
+
+.message-footer > ul > li {
+  margin-left: 1rem;
 }
 
 #form-message-new {
