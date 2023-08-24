@@ -79,7 +79,8 @@ app.post('/users/new', (req, res, next) => {
           password: hashedPassword,
           first_name: req.body.first_name,
           family_name: req.body.family_name,
-          member: true
+          member: true,
+          admin: req.body.secret_code === 'cats'
         });
         await user.save();
         res.redirect('/');
