@@ -137,12 +137,17 @@ app.post('/messages/:messageId', async (req, res, next) => {
 app.get('/', async (req, res) => {
   const messages = await Message.find({}).then(async (data) => {
     return await Promise.all(data.map(async (message) => {
-      const authorName = await message.getAuthor();
+      /* {
+        id,
+        name
+      }
+      */
+      const authorObj = await message.getAuthor();
       return {
         id: message._id.toString(),
         title: message.title,
         content: message.content,
-        author: authorName
+        author: authorObj
       }
     }))
   });

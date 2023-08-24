@@ -9,7 +9,12 @@ const messageSchema = new Schema({
 });
 
 messageSchema.methods.getAuthor = async function () {
-  return await User.findById(this.author).then(data => data.first_name);
+  return await User.findById(this.author).then(data => {
+    return {
+      id: data._id.toString(),
+      name: `${data.first_name} ${data.family_name}`,
+    }
+  });
 };
 
 const Message = mongoose.model("Message", messageSchema);
