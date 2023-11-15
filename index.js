@@ -10,6 +10,7 @@ const User = require('./models/user');
 const Message = require('./models/message');
 
 const mongoDb = process.env.uri;
+
 mongoose.connect(mongoDb, {
   useUnifiedTopology: true,
   useNewUrlParser: true
@@ -149,7 +150,7 @@ app.get('/', async (req, res) => {
         content: message.content,
         author: authorObj
       }
-    }))
+    }));
   });
   res.render("index", { user: res.locals.currentUser, messages });
 });
